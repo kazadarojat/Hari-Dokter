@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Hari Dokter - FK UIN Walisongo</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Tone.js for Sound Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'uin-green': '#0e7c5b',
+                        'uin-gold': '#d4af37',
+                        'med-blue': '#0ea5e9'
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        serif: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #000000;
+            overflow-x: hidden;
+            color: #f8fafc;
+        }
+
+        :root {
+            --gift-scale: 1;
+            --gift-scale-hover: 1.05;
+        }
+
+        /* Animations */
+        @keyframes shake {
+            0% { transform: rotate(0deg) scale(var(--gift-scale)); }
+            25% { transform: rotate(-8deg) scale(var(--gift-scale-hover)); }
+            50% { transform: rotate(8deg) scale(var(--gift-scale-hover)); }
+            75% { transform: rotate(-8deg) scale(var(--gift-scale-hover)); }
+            100% { transform: rotate(0deg) scale(var(--gift-scale)); }
+        }
+        
+        .shake-animation {
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes popOut {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+            100% { transform: scale(0); opacity: 0; display: none; }
+        }
+
+        .pop-out {
+            animation: popOut 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        /* Additional Animations */
+        @keyframes pulseGlow {
+            0% { filter: drop-shadow(0 0 10px rgba(14, 124, 91, 0.4)); transform: scale(var(--gift-scale)); }
+            50% { filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.8)); transform: scale(var(--gift-scale-hover)); }
+            100% { filter: drop-shadow(0 0 10px rgba(14, 124, 91, 0.4)); transform: scale(var(--gift-scale)); }
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) rotate(0deg) scale(0.8); opacity: 0.8; }
+            100% { transform: translateY(-20vh) rotate(360deg) scale(1.2); opacity: 0; }
+        }
+
+        .floating-item {
+            position: fixed;
+            z-index: -1;
+            bottom: -50px;
+            animation: floatUp linear forwards;
+        }
+
+        /* Lid opening animation */
+        @keyframes lidFly {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-120px) rotate(15deg); opacity: 0; }
+        }
+
+        .lid-open {
+            animation: lidFly 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Staggered entrance for content */
+        .stagger-1 { opacity: 0; animation: fadeIn 1s ease-out 0.3s forwards; }
+        .stagger-2 { opacity: 0; animation: fadeIn 1s ease-out 0.8s forwards; }
+        .stagger-3 { opacity: 0; animation: fadeIn 1s ease-out 1.3s forwards; }
+
+        /* Photo Frame Style (Menggantikan Polaroid) */
+        .photo-frame {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 16px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(212, 175, 55, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .photo-frame:hover {
+            transform: translateY(-12px) scale(1.05);
+            border-color: rgba(212, 175, 55, 0.8);
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.3), inset 0 0 20px rgba(212, 175, 55, 0.3);
+            z-index: 10;
+        }
+
+        .photo-frame img {
+            border-radius: 10px;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+        }
+
+        /* Efek Animasi Bersinar (Glow & Shine) */
+        @keyframes textPulse {
+            0% { text-shadow: 0 0 10px rgba(212,175,55,0.2); }
+            100% { text-shadow: 0 0 25px rgba(212,175,55,0.8), 0 0 15px rgba(212,175,55,0.5); }
+        }
+        
+        .text-glow {
+            animation: textPulse 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes ambientGlow {
+            0% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.2), inset 0 0 15px rgba(14, 124, 91, 0.2); border-color: rgba(212, 175, 55, 0.4); }
+            100% { box-shadow: 0 0 50px rgba(212, 175, 55, 0.7), inset 0 0 30px rgba(14, 124, 91, 0.5); border-color: rgba(212, 175, 55, 0.9); }
+        }
+        
+        .card-glow {
+            animation: ambientGlow 3s infinite alternate ease-in-out;
+        }
+
+        @keyframes sweepShine {
+            0% { transform: translateX(-150%) skewX(-20deg); }
+            20% { transform: translateX(250%) skewX(-20deg); }
+            100% { transform: translateX(250%) skewX(-20deg); } /* Jeda sebelum cahaya lewat lagi */
+        }
+        
+        .shine-effect::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 70%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(212, 175, 55, 0.25) 50%, rgba(255,255,255,0) 100%);
+            transform: translateX(-150%) skewX(-20deg);
+            animation: sweepShine 5s infinite;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0e7c5b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0a5f45;
+        }
+
+        /* Animasi Ledakan Cahaya */
+        @keyframes lightBlastAnim {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(212,175,55,1) 40%, transparent 70%); }
+            40% { opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(80); opacity: 0; background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(212,175,55,0.6) 50%, transparent 80%); }
+        }
+        
+        .animate-light-blast {
+            animation: lightBlastAnim 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+
+        /* Teks Berkilau */
+        @keyframes shimmerText {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        .text-shimmer {
+            background: linear-gradient(90deg, #d4af37 0%, #ffffff 25%, #d4af37 50%, #0e7c5b 75%, #d4af37 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmerText 4s linear infinite;
+        }
+
+        /* Bintang Berkelap-kelip di Background */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px rgba(212,175,55,0.8); }
+        }
+
+        .bg-star {
+            position: fixed;
+            background-color: #d4af37;
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+            animation: twinkle infinite ease-in-out;
+        }
+
+        /* Percikan saat kado diketuk */
+        @keyframes flyOutSparkle {
+            0% { transform: translate(-50%, -50%) scale(0.5) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(var(--rot)); opacity: 0; }
+        }
+
+        .click-sparkle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            pointer-events: none;
+            z-index: 60;
+            animation: flyOutSparkle 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        /* Ambient Gradient Orbs */
+        @keyframes moveOrb1 {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30vw, -20vh) scale(1.3); }
+            66% { transform: translate(-20vw, 20vh) scale(0.8); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        @keyframes moveOrb2 {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(-30vw, 20vh) scale(1.2); }
+            66% { transform: translate(20vw, -20vh) scale(1.4); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        .orb-1 {
+            position: absolute; top: 10%; left: 0%; width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(14, 124, 91, 0.25) 0%, transparent 70%);
+            border-radius: 50%; filter: blur(50px); z-index: 0; pointer-events: none;
+            animation: moveOrb1 15s infinite ease-in-out;
+        }
+        .orb-2 {
+            position: absolute; bottom: 10%; right: 0%; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
+            border-radius: 50%; filter: blur(60px); z-index: 0; pointer-events: none;
+            animation: moveOrb2 18s infinite ease-in-out reverse;
+        }
+
+        /* Animated Progress Bar */
+        @keyframes progressFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        .progress-gradient {
+            background: linear-gradient(90deg, #d4af37, #ffffff, #0ea5e9, #0e7c5b, #d4af37);
+            background-size: 200% auto;
+            animation: progressFlow 2s linear infinite;
+        }
+
+        /* Continuous Floating Cards */
+        @keyframes floatContinuous {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        .float-card {
+            animation: floatContinuous 5s ease-in-out infinite;
+        }
+        .float-card:nth-child(2) { animation-delay: -1.5s; }
+        .float-card:nth-child(3) { animation-delay: -3s; }
+
+        /* Richer Text Gradient */
+        @keyframes shimmerRich {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        .text-shimmer-rich {
+            background: linear-gradient(90deg, #d4af37, #ffffff, #0ea5e9, #0e7c5b, #d4af37);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmerRich 3s linear infinite;
+        }
+
+        /* Interactive Click Ripple */
+        .click-ripple {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid rgba(212, 175, 55, 0.8);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5), inset 0 0 10px rgba(212, 175, 55, 0.3);
+            transform: translate(-50%, -50%) scale(0);
+            animation: rippleAnim 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @keyframes rippleAnim {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; border-width: 4px; }
+            100% { transform: translate(-50%, -50%) scale(20); opacity: 0; border-width: 0px; }
+        }
+
+        /* Cursor Glow Smoothing */
+        #cursor-glow {
+            transition: opacity 0.3s ease;
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-black min-h-screen font-sans text-gray-200">
+
+    <!-- Custom Cursor Glow -->
+    <div id="cursor-glow" class="fixed w-64 h-64 bg-uin-gold/10 rounded-full blur-[60px] pointer-events-none z-40 transform -translate-x-1/2 -translate-y-1/2 opacity-0 mix-blend-screen"></div>
+
+    <!-- Screen 1: The Interactive Gift -->
+    <div id="gift-screen" class="fixed inset-0 flex flex-col items-center justify-center z-50 bg-black transition-opacity duration-500">
+        
+        <div class="text-center mb-8 px-4 relative z-10">
+            <h1 class="text-3xl md:text-4xl font-sans text-uin-gold font-bold mb-2">Ada Sesuatu Untuk Dokter!</h1>
+            <p id="instruction-text" class="text-lg text-gray-300 animate-pulse">Terus ketuk kado ini untuk membuka...</p>
+        </div>
+
+        <!-- Efek Ledakan Cahaya dari Kado -->
+        <div id="light-blast" class="absolute top-1/2 left-1/2 w-16 h-16 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none opacity-0 z-0"></div>
+
+        <!-- Gift Box SVG -->
+        <div id="gift-box" class="cursor-pointer pulse-glow transition-all duration-300 active:scale-95 relative z-10" style="transform: scale(var(--gift-scale));" onclick="tapGift()">
+            <svg width="250" height="250" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Shadow -->
+                <ellipse cx="100" cy="180" rx="70" ry="10" fill="rgba(0,0,0,0.15)"/>
+                
+                <g id="gift-base">
+                    <!-- Box -->
+                    <rect id="color-box-1" x="40" y="80" width="120" height="90" rx="5" fill="#0e7c5b" style="transition: fill 0.3s ease;"/>
+                    <rect id="color-box-2" x="40" y="80" width="60" height="90" fill="#0a5f45" style="transition: fill 0.3s ease;"/>
+                    <!-- Ribbon Horizontal Box -->
+                    <rect class="color-ribbon-1" x="40" y="115" width="120" height="20" fill="#d4af37" style="transition: fill 0.3s ease;"/>
+                    <!-- Ribbon Vertical Box -->
+                    <rect class="color-ribbon-1" x="90" y="80" width="20" height="90" fill="#d4af37" style="transition: fill 0.3s ease;"/>
+                </g>
+
+                <g id="gift-lid" style="transform-origin: 100px 80px;">
+                    <!-- Lid -->
+                    <rect id="color-lid-1" x="30" y="60" width="140" height="25" rx="3" fill="#0e7c5b" style="transition: fill 0.3s ease;"/>
+                    <rect id="color-lid-2" x="30" y="60" width="70" height="25" fill="#0a5f45" style="transition: fill 0.3s ease;"/>
+                    <!-- Ribbon Vertical Lid -->
+                    <rect class="color-ribbon-1" x="90" y="60" width="20" height="25" fill="#d4af37" style="transition: fill 0.3s ease;"/>
+                    <!-- Bow -->
+                    <path class="color-ribbon-1" d="M100 60 C80 30, 40 40, 60 70 C70 85, 95 65, 100 60 Z" fill="#d4af37" style="transition: fill 0.3s ease;"/>
+                    <path class="color-ribbon-1" d="M100 60 C120 30, 160 40, 140 70 C130 85, 105 65, 100 60 Z" fill="#d4af37" style="transition: fill 0.3s ease;"/>
+                    <!-- Bow center -->
+                    <circle id="color-ribbon-2" cx="100" cy="60" r="10" fill="#b5952f" style="transition: fill 0.3s ease;"/>
+                </g>
+            </svg>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="mt-8 w-64 bg-gray-800 rounded-full h-2.5 overflow-hidden border border-gray-700">
+            <div id="progress-bar" class="progress-gradient h-2.5 rounded-full transition-all duration-300 shadow-[0_0_10px_#d4af37]" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <!-- Screen 2: Main Content (Hidden Initially) -->
+    <div id="main-content" class="hidden min-h-screen py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto opacity-0 relative z-10 overflow-hidden">
+        
+        <!-- Animated Background Orbs -->
+        <div class="orb-1"></div>
+        <div class="orb-2"></div>
+
+        <!-- Header Section -->
+        <header class="text-center mb-16 space-y-6 pt-10 stagger-1 relative z-20">
+            <div class="inline-block p-4 bg-slate-800/80 rounded-full shadow-[0_0_20px_rgba(212,175,55,0.3)] mb-4 text-glow backdrop-blur-sm border border-slate-700">
+                <svg class="w-12 h-12 text-uin-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-sans font-bold tracking-wide text-shimmer-rich text-glow drop-shadow-2xl">Selamat Hari Dokter Nasional</h1>
+            <p class="text-xl md:text-2xl font-medium text-gray-300 italic">24 Oktober</p>
+            <div class="w-24 h-1 progress-gradient mx-auto rounded shadow-[0_0_10px_#d4af37]"></div>
+        </header>
+
+        <!-- Greeting Cards Container (3 Cards) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 relative z-20 stagger-2">
+            
+            <!-- Card 1: Ucapan Selamat -->
+            <div class="bg-black/60 backdrop-blur-xl p-8 rounded-3xl border border-uin-gold/50 relative overflow-hidden hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(212,175,55,0.6)] transition-all duration-300 shine-effect group float-card">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-uin-gold/20 rounded-bl-full blur-2xl group-hover:bg-uin-gold/40 transition-colors"></div>
+                <div class="relative z-10 text-center space-y-6">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">🎉</div>
+                    <h2 class="text-2xl font-bold text-white tracking-wide">Ucapan Selamat</h2>
+                    <h3 class="text-lg text-uin-gold font-medium uppercase tracking-widest">Hari Dokter</h3>
+                    <div class="w-16 h-px bg-uin-gold mx-auto"></div>
+                    <p class="text-gray-300 font-light leading-relaxed">
+                        Teruntuk seluruh Dosen & Dokter Fakultas Kedokteran UIN Walisongo Semarang. Selamat merayakan hari yang mulia ini. Pengabdian Anda adalah inspirasi bagi kami.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Card 2: Ucapan Terima Kasih -->
+            <div class="bg-black/60 backdrop-blur-xl p-8 rounded-3xl border border-uin-green/50 relative overflow-hidden hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(14,124,91,0.6)] transition-all duration-300 shine-effect group float-card">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-uin-green/20 rounded-bl-full blur-2xl group-hover:bg-uin-green/40 transition-colors"></div>
+                <div class="relative z-10 text-center space-y-6">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">💐</div>
+                    <h2 class="text-2xl font-bold text-white tracking-wide">Terima Kasih</h2>
+                    <h3 class="text-lg text-uin-green font-medium uppercase tracking-widest">Atas Dedikasi</h3>
+                    <div class="w-16 h-px bg-uin-green mx-auto"></div>
+                    <p class="text-gray-300 font-light leading-relaxed">
+                        Terima kasih yang sebesar-besarnya atas segala ilmu, kesabaran, dan bimbingan luar biasa dalam mendidik kami menjadi calon tenaga medis yang profesional dan berakhlakul karimah.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Card 3: Untaian Doa -->
+            <div class="bg-black/60 backdrop-blur-xl p-8 rounded-3xl border border-med-blue/50 relative overflow-hidden hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(14,165,233,0.6)] transition-all duration-300 shine-effect group float-card">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-med-blue/20 rounded-bl-full blur-2xl group-hover:bg-med-blue/40 transition-colors"></div>
+                <div class="relative z-10 text-center space-y-6">
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">🤲</div>
+                    <h2 class="text-2xl font-bold text-white tracking-wide">Untaian Doa</h2>
+                    <h3 class="text-lg text-med-blue font-medium uppercase tracking-widest">Harapan Baik</h3>
+                    <div class="w-16 h-px bg-med-blue mx-auto"></div>
+                    <p class="text-gray-300 font-light leading-relaxed">
+                        Semoga Allah SWT senantiasa memberikan kesehatan, keberkahan usia, kelancaran rezeki, dan perlindungan untuk Dokter beserta keluarga tercinta. Aamiin Ya Rabbal 'Alamin.
+                    </p>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Penutup (Dari Mahasiswa) -->
+        <div class="text-center mb-24 stagger-3 relative z-20">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-px bg-gradient-to-r from-transparent via-uin-gold to-transparent"></div>
+            <p class="font-medium text-gray-400 text-sm uppercase tracking-widest mb-3 pt-8">Salam Hangat Penuh Cinta,</p>
+            <p class="text-shimmer-rich font-bold text-3xl md:text-4xl tracking-wider text-glow">Mahasiswa FK UIN Walisongo</p>
+        </div>
+
+        <!-- Photo Gallery Section -->
+        <section class="mb-16 stagger-3 relative z-20">
+            <h3 class="text-3xl font-sans text-center text-white mb-10 text-glow">Momen Indah Bersama</h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-4" id="gallery-container">
+                
+                <!-- Photo 1 -->
+                <div class="photo-frame reveal-on-scroll cursor-pointer" onclick="openLightbox(this)">
+                    <img src="https://placehold.co/600x600/0e7c5b/ffffff?text=Momen+1" alt="Momen 1">
+                </div>
+
+                <!-- Photo 2 -->
+                <div class="photo-frame reveal-on-scroll cursor-pointer delay-100" onclick="openLightbox(this)">
+                    <img src="https://placehold.co/600x600/d4af37/ffffff?text=Momen+2" alt="Momen 2">
+                </div>
+
+                <!-- Photo 3 -->
+                <div class="photo-frame reveal-on-scroll cursor-pointer delay-200" onclick="openLightbox(this)">
+                    <img src="https://placehold.co/600x600/0ea5e9/ffffff?text=Momen+3" alt="Momen 3">
+                </div>
+                
+                <!-- Photo 4 -->
+                <div class="photo-frame reveal-on-scroll cursor-pointer" onclick="openLightbox(this)">
+                    <img src="https://placehold.co/600x600/475569/ffffff?text=Momen+4" alt="Momen 4">
+                </div>
+
+                <!-- Photo 5 -->
+                <div class="photo-frame reveal-on-scroll cursor-pointer delay-100" onclick="openLightbox(this)">
+                    <img src="https://placehold.co/600x600/0e7c5b/ffffff?text=Momen+5" alt="Momen 5">
+                </div>
+
+                <!-- Photo 6 -->
+                <div class="photo-frame reveal-on-scroll cursor-pointer delay-200" onclick="openLightbox(this)">
+                    <img src="https://placehold.co/600x600/d4af37/ffffff?text=Momen+6" alt="Momen 6">
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 text-sm pb-8">
+            <p>Dibuat dengan penuh cinta dari Mahasiswa FK UIN Walisongo Semarang.</p>
+        </footer>
+
+    </div>
+
+    <!-- Floating Music Control Button (Hidden Initially) -->
+    <button id="music-toggle" class="hidden fixed bottom-6 right-6 z-[100] w-12 h-12 bg-slate-800/80 backdrop-blur-md border border-uin-gold/50 rounded-full flex items-center justify-center text-uin-gold hover:scale-110 hover:bg-slate-700 transition-all shadow-[0_0_15px_rgba(212,175,55,0.4)]" onclick="toggleMusic()">
+        <svg id="icon-unmuted" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
+        <svg id="icon-muted" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.663L5.586 15z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
+    </button>
+
+    <!-- Lightbox Modal for Photo Zoom -->
+    <div id="lightbox-modal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/95 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm" onclick="closeLightbox()">
+        <button class="absolute top-6 right-6 text-white hover:text-uin-gold text-4xl font-bold transition-colors">&times;</button>
+        <div class="relative max-w-4xl w-full p-4 transform scale-95 transition-transform duration-300" id="lightbox-content">
+            <img id="lightbox-img" src="" alt="Zoomed Photo" class="w-full h-auto max-h-[85vh] object-contain rounded-lg shadow-[0_0_30px_rgba(255,255,255,0.1)] border border-gray-700 p-2 bg-white">
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        const MAX_TAPS = 5;
+        let currentTaps = 0;
+        
+        const giftBox = document.getElementById('gift-box');
+        const giftScreen = document.getElementById('gift-screen');
+        const mainContent = document.getElementById('main-content');
+        const instructionText = document.getElementById('instruction-text');
+        const progressBar = document.getElementById('progress-bar');
+
+        // Palet Warna Kado Tiap Kali Diketuk
+        const giftColorPalettes = [
+            { main: '#0e7c5b', dark: '#0a5f45', rib: '#d4af37', ribDark: '#b5952f' }, // 0: Hijau UIN (Awal)
+            { main: '#0ea5e9', dark: '#0284c7', rib: '#f59e0b', ribDark: '#d97706' }, // 1: Biru
+            { main: '#8b5cf6', dark: '#6d28d9', rib: '#fcd34d', ribDark: '#fbbf24' }, // 2: Ungu
+            { main: '#f43f5e', dark: '#be123c', rib: '#93c5fd', ribDark: '#60a5fa' }, // 3: Merah Muda (Rose)
+            { main: '#f59e0b', dark: '#b45309', rib: '#10b981', ribDark: '#059669' }, // 4: Oranye Emas
+            { main: '#ec4899', dark: '#be185d', rib: '#fde047', ribDark: '#eab308' }  // 5: Final
+        ];
+
+        function changeGiftAppearance(taps) {
+            // Ubah Ukuran (Scale) Kado menggunakan CSS Variable
+            const newScale = 1 + (taps * 0.12); // Bertambah besar 12% setiap ketukan
+            document.documentElement.style.setProperty('--gift-scale', newScale);
+            document.documentElement.style.setProperty('--gift-scale-hover', newScale + 0.05);
+
+            // Ambil warna sesuai jumlah ketukan
+            const palette = giftColorPalettes[taps] || giftColorPalettes[giftColorPalettes.length - 1];
+            
+            // Terapkan warna ke komponen kado (Box dan Tutup) dengan transisi mulus
+            document.getElementById('color-box-1').setAttribute('fill', palette.main);
+            document.getElementById('color-box-2').setAttribute('fill', palette.dark);
+            document.getElementById('color-lid-1').setAttribute('fill', palette.main);
+            document.getElementById('color-lid-2').setAttribute('fill', palette.dark);
+            
+            // Terapkan warna ke pita kado
+            const ribbons1 = document.querySelectorAll('.color-ribbon-1');
+            ribbons1.forEach(el => el.setAttribute('fill', palette.rib));
+            document.getElementById('color-ribbon-2').setAttribute('fill', palette.ribDark);
+        }
+
+        // Audio Setup using Tone.js
+        let tapSynth, tadaSynth, bgmSynth, melodySynth;
+        let isAudioReady = false;
+        let isMusicMuted = false;
+
+        async function setupAudio() {
+            if (isAudioReady) return;
+            await Tone.start();
+            
+            // Sound for tapping
+            tapSynth = new Tone.PolySynth(Tone.Synth, {
+                oscillator: { type: 'sine' },
+                envelope: { attack: 0.01, decay: 0.1, sustain: 0, release: 0.1 }
+            }).toDestination();
+            tapSynth.volume.value = -5;
+
+            // Sound for opening (magical success chord)
+            tadaSynth = new Tone.PolySynth(Tone.Synth, {
+                oscillator: { type: 'triangle' },
+                envelope: { attack: 0.05, decay: 0.2, sustain: 0.4, release: 2 }
+            }).toDestination();
+            tadaSynth.volume.value = -2;
+
+            // --- Instrumen Lagu Latar (Background Music) Setup ---
+            // Synthesizer untuk chord pengiring (Lebih Upbeat dan Bouncy)
+            bgmSynth = new Tone.PolySynth(Tone.Synth, {
+                oscillator: { type: 'square' },
+                envelope: { attack: 0.05, decay: 0.2, sustain: 0.1, release: 0.5 }
+            }).toDestination();
+            bgmSynth.volume.value = -16;
+
+            // Synthesizer untuk melodi (Ceria dan Lincah)
+            melodySynth = new Tone.Synth({
+                oscillator: { type: 'triangle' },
+                envelope: { attack: 0.05, decay: 0.1, sustain: 0.3, release: 0.5 }
+            }).toDestination();
+            melodySynth.volume.value = -10;
+            
+            // Synthesizer khusus Drum (Kick Drum) agar lebih asik
+            const drumSynth = new Tone.MembraneSynth().toDestination();
+            drumSynth.volume.value = -10;
+
+            // Chord Progression ceria dengan ritme patah-patah (staccato)
+            const chords = [
+                { time: '0:0:0', notes: ['C4', 'E4', 'G4'] },
+                { time: '0:0:2', notes: ['C4', 'E4', 'G4'] },
+                { time: '0:1:0', notes: ['F3', 'A3', 'C4'] },
+                { time: '0:1:2', notes: ['F3', 'A3', 'C4'] },
+                { time: '0:2:0', notes: ['G3', 'B3', 'D4'] },
+                { time: '0:2:2', notes: ['G3', 'B3', 'D4'] },
+                { time: '0:3:0', notes: ['C4', 'E4', 'G4'] },
+                { time: '0:3:2', notes: ['C4', 'E4', 'G4'] }
+            ];
+
+            // Melodi semangat dan cepat
+            const melody = [
+                { time: '0:0:0', note: 'C5', duration: '16n' },
+                { time: '0:0:1', note: 'D5', duration: '16n' },
+                { time: '0:0:2', note: 'E5', duration: '8n' },
+                { time: '0:1:0', note: 'F5', duration: '16n' },
+                { time: '0:1:1', note: 'G5', duration: '16n' },
+                { time: '0:1:2', note: 'A5', duration: '8n' },
+                { time: '0:2:0', note: 'G5', duration: '8n' },
+                { time: '0:2:2', note: 'F5', duration: '8n' },
+                { time: '0:3:0', note: 'E5', duration: '8n' },
+                { time: '0:3:2', note: 'D5', duration: '8n' }
+            ];
+            
+            // Beat drum konstan 4/4 (Jantung kemeriahan)
+            const drums = [
+                { time: '0:0:0', note: 'C1' }, 
+                { time: '0:1:0', note: 'C1' }, 
+                { time: '0:2:0', note: 'C1' }, 
+                { time: '0:3:0', note: 'C1' }
+            ];
+
+            // Menjadwalkan pemutaran instrumen
+            new Tone.Part((time, value) => {
+                bgmSynth.triggerAttackRelease(value.notes, '16n', time);
+            }, chords).start(0);
+
+            new Tone.Part((time, value) => {
+                melodySynth.triggerAttackRelease(value.note, value.duration, time);
+            }, melody).start(0);
+            
+            new Tone.Part((time, value) => {
+                drumSynth.triggerAttackRelease(value.note, '8n', time);
+            }, drums).start(0);
+
+            // Pengaturan tempo dan perulangan (loop) lagu
+            Tone.Transport.bpm.value = 130; // Tempo cepat, fun, dan semangat! (Sebelumnya 75)
+            Tone.Transport.loop = true;
+            Tone.Transport.loopStart = 0;
+            Tone.Transport.loopEnd = '1m'; // Loop lagu setiap 1 measure/bar
+
+            isAudioReady = true;
+        }
+
+        // Fungsi Toggle Musik (Mute/Unmute)
+        function toggleMusic() {
+            if (!isAudioReady) return;
+            isMusicMuted = !isMusicMuted;
+            
+            // Mengatur volume global dari Tone.js
+            Tone.Destination.mute = isMusicMuted;
+
+            // Mengubah ikon
+            const unmutedIcon = document.getElementById('icon-unmuted');
+            const mutedIcon = document.getElementById('icon-muted');
+            
+            if (isMusicMuted) {
+                unmutedIcon.classList.add('hidden');
+                mutedIcon.classList.remove('hidden');
+            } else {
+                unmutedIcon.classList.remove('hidden');
+                mutedIcon.classList.add('hidden');
+            }
+        }
+
+        // Efek Percikan Saat Kado Diketuk
+        function spawnClickSparkles() {
+            const emojis = ['✨', '🌟', '💖', '🎉'];
+            for (let i = 0; i < 8; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'click-sparkle text-2xl md:text-4xl';
+                sparkle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                // Kalkulasi arah ledakan acak
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 100 + Math.random() * 100;
+                const tx = Math.cos(angle) * distance + 'px';
+                const ty = Math.sin(angle) * distance + 'px';
+                const rot = (Math.random() * 360) + 'deg';
+                
+                sparkle.style.setProperty('--tx', tx);
+                sparkle.style.setProperty('--ty', ty);
+                sparkle.style.setProperty('--rot', rot);
+                
+                document.getElementById('gift-screen').appendChild(sparkle);
+                
+                // Hapus elemen setelah animasi selesai
+                setTimeout(() => sparkle.remove(), 600);
+            }
+        }
+
+        // Floating element animations
+        function createFloatingElements() {
+            const emojis = ['🩺', '💊', '💚', '✨', '🎉', '🏥'];
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.className = 'floating-item text-4xl';
+                    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    el.style.left = `${Math.random() * 100}vw`;
+                    el.style.animationDuration = `${Math.random() * 6 + 6}s`; // 6-12 seconds
+                    el.style.fontSize = `${Math.random() * 20 + 20}px`;
+                    document.body.appendChild(el);
+
+                    // Remove after animation completes to prevent DOM bloat
+                    setTimeout(() => el.remove(), 12000);
+                }, i * 200); // Stagger element creation
+            }
+
+            // Hujan konfetti tambahan secara berkala
+            setInterval(() => {
+                confetti({
+                    particleCount: 15,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#0e7c5b', '#d4af37']
+                });
+                confetti({
+                    particleCount: 15,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#0ea5e9', '#ffffff']
+                });
+            }, 3000); // Tembak konfetti setiap 3 detik di pinggir layar
+        }
+
+        // Bintang latar belakang
+        function createBackgroundStars() {
+            for (let i = 0; i < 40; i++) {
+                const star = document.createElement('div');
+                star.className = 'bg-star';
+                
+                // Randomize size, position, and animation
+                const size = Math.random() * 4 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100}vh`;
+                star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                
+                document.body.appendChild(star);
+            }
+        }
+
+        async function tapGift() {
+            if (currentTaps >= MAX_TAPS) return; // Prevent double firing
+            
+            await setupAudio(); // Ensure audio context is started on user gesture
+
+            currentTaps++;
+            
+            // Ubah Warna dan Ukuran setiap ketukan
+            changeGiftAppearance(currentTaps);
+            
+            // Panggil efek percikan
+            spawnClickSparkles();
+
+            // Play Tap Sound (pitch goes up with each tap)
+            const notes = ["C4", "E4", "G4", "C5", "E5"];
+            tapSynth.triggerAttackRelease(notes[currentTaps - 1] || "C4", "16n");
+
+            // Update UI with dynamic texts instead of numbers
+            const messages = ["Wah, ada yang bergerak!", "Ayo sedikit lagi...", "Terus ketuk!", "Hampir terbuka..."];
+            if (currentTaps < MAX_TAPS) {
+                instructionText.textContent = messages[Math.min(currentTaps - 1, messages.length - 1)];
+            } else {
+                instructionText.textContent = "Terbuka!";
+            }
+            
+            // Update Progress bar
+            progressBar.style.width = `${(currentTaps / MAX_TAPS) * 100}%`;
+
+            // Trigger Shake Animation
+            giftBox.classList.remove('shake-animation', 'pulse-glow');
+            void giftBox.offsetWidth; // Trigger reflow to restart animation
+            giftBox.classList.add('shake-animation');
+
+            // Check if open
+            if (currentTaps === MAX_TAPS) {
+                openGift();
+            } else {
+                // Resume glow after shaking finishes
+                setTimeout(() => giftBox.classList.add('pulse-glow'), 400);
+            }
+        }
+
+        function openGift() {
+            // Play Tada/Success Sound Progression
+            if (isAudioReady) {
+                const now = Tone.now();
+                tadaSynth.triggerAttackRelease(["C4", "E4", "G4", "C5"], "2n", now);
+                tadaSynth.triggerAttackRelease(["F4", "A4", "C5", "F5"], "2n", now + 0.4);
+                tadaSynth.triggerAttackRelease(["G4", "B4", "D5", "G5"], "2n", now + 0.8);
+                tadaSynth.triggerAttackRelease(["C4", "E4", "G4", "C5", "E5", "G5"], "1m", now + 1.2); 
+                
+                // Mulai memutar instrumen musik latar 2 detik setelah suara Tada
+                setTimeout(() => {
+                    Tone.Transport.start();
+                    // Munculkan tombol musik
+                    document.getElementById('music-toggle').classList.remove('hidden');
+                    document.getElementById('music-toggle').classList.add('fade-in');
+                }, 2000);
+            }
+
+            // Animate lid flying off
+            document.getElementById('gift-lid').classList.add('lid-open');
+            
+            // Trigger ledakan cahaya keluar dari kado
+            document.getElementById('light-blast').classList.add('animate-light-blast');
+            
+            // Wait for lid to fly off before hiding the rest of the box
+            setTimeout(() => {
+                // Make gift base pop out
+                giftBox.classList.add('pop-out');
+                
+                setTimeout(() => {
+                    // Fade out gift screen
+                    giftScreen.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        giftScreen.style.display = 'none';
+                        
+                        // Show and animate main content
+                        mainContent.classList.remove('hidden');
+                        
+                        // Allow small delay for rendering before adding fade-in
+                        requestAnimationFrame(() => {
+                            mainContent.classList.add('fade-in');
+                            createBackgroundStars(); // Munculkan bintang-bintang di latar
+                            fireConfetti();
+                            createFloatingElements(); // Start medical icons floating
+                            setupAdvancedInteractivity(); // Aktifkan interaksi 3D dan Kursor
+                            setupScrollObserver(); // Aktifkan animasi scroll
+                        });
+                        
+                    }, 500); // Wait for screen fade out
+                    
+                }, 400); // Wait for pop out animation
+            }, 500); // Wait for lid animation
+        }
+
+        function fireConfetti() {
+            const duration = 5 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 50 * (timeLeft / duration);
+                
+                // Fire from multiple angles
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                    colors: ['#0e7c5b', '#d4af37', '#ffffff', '#0ea5e9'] 
+                }));
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                    colors: ['#0e7c5b', '#d4af37', '#ffffff', '#0ea5e9'] 
+                }));
+            }, 250);
+            
+            // Add a large burst initially
+            confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.6 },
+                colors: ['#0e7c5b', '#d4af37', '#ffffff']
+            });
+        }
+
+        // Fitur Interaksi Lanjutan (Advanced Interactivity)
+        function setupAdvancedInteractivity() {
+            const cursorGlow = document.getElementById('cursor-glow');
+            cursorGlow.classList.remove('opacity-0');
+
+            // 1. Cahaya mengikuti kursor
+            document.addEventListener('mousemove', (e) => {
+                cursorGlow.style.left = e.clientX + 'px';
+                cursorGlow.style.top = e.clientY + 'px';
+            });
+
+            // Menyembunyikan cahaya saat kursor keluar layar
+            document.addEventListener('mouseleave', () => cursorGlow.style.opacity = '0');
+            document.addEventListener('mouseenter', () => cursorGlow.style.opacity = '1');
+
+            // 2. Efek Gelombang (Ripple) setiap kali klik di layar
+            document.addEventListener('click', (e) => {
+                const ripple = document.createElement('div');
+                ripple.className = 'click-ripple';
+                ripple.style.left = e.clientX + 'px';
+                ripple.style.top = e.clientY + 'px';
+                document.body.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600); // Bersihkan elemen
+            });
+
+            // 3. Efek Tilt 3D pada Kartu Ucapan
+            const cards = document.querySelectorAll('.float-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left; // Posisi x dalam kartu
+                    const y = e.clientY - rect.top;  // Posisi y dalam kartu
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    // Hitung rotasi (maksimal 15 derajat)
+                    const rotateX = ((y - centerY) / centerY) * -15; 
+                    const rotateY = ((x - centerX) / centerX) * 15;
+                    
+                    // Jeda animasi mengambang agar tidak bertabrakan dengan efek 3D
+                    card.style.animation = 'none'; 
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
+                    // Kembalikan animasi mengambang setelah jeda
+                    setTimeout(() => {
+                        card.style.animation = ''; 
+                    }, 300);
+                });
+            });
+
+            // 4. Konfetti Mini pada Foto saat disentuh (Hover)
+            const photoFrames = document.querySelectorAll('.photo-frame');
+            photoFrames.forEach(p => {
+                p.addEventListener('mouseenter', (e) => {
+                    const rect = p.getBoundingClientRect();
+                    // Hitung persentase posisi x dan y untuk asal tembakan konfetti
+                    const x = (rect.left + rect.width / 2) / window.innerWidth;
+                    const y = (rect.top + rect.height / 2) / window.innerHeight;
+                    
+                    confetti({
+                        particleCount: 20,
+                        spread: 60,
+                        origin: { x, y },
+                        colors: ['#d4af37', '#0e7c5b', '#ffffff'],
+                        zIndex: 100,
+                        startVelocity: 15,
+                        gravity: 0.8
+                    });
+                });
+            });
+        }
+
+        // Fitur 5: Animasi Muncul Saat Di-scroll (Intersection Observer)
+        function setupScrollObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        // Optional: Berhenti mengamati setelah elemen muncul
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.2, // Muncul ketika 20% elemen terlihat di layar
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            const elements = document.querySelectorAll('.reveal-on-scroll');
+            elements.forEach(el => observer.observe(el));
+        }
+
+        // Fitur 6: Lightbox (Pop-up Foto)
+        function openLightbox(element) {
+            const modal = document.getElementById('lightbox-modal');
+            const modalImg = document.getElementById('lightbox-img');
+            const modalContent = document.getElementById('lightbox-content');
+            
+            // Ambil gambar dari elemen yang diklik
+            const imgSrc = element.querySelector('img').src;
+            
+            modalImg.src = imgSrc;
+            
+            // Tampilkan modal
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+            
+            // Hentikan scroll body
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('lightbox-modal');
+            const modalContent = document.getElementById('lightbox-content');
+            
+            // Sembunyikan modal
+            modal.classList.add('pointer-events-none', 'opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            
+            // Kembalikan scroll body
+            document.body.style.overflow = '';
+        }
+    </script>
+</body>
+</html>
